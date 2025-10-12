@@ -7,3 +7,15 @@ type NavigateMsg struct {
 type SetPasswordMsg struct {
 	Password string
 }
+
+type ResetTo struct {
+	Target Route
+}
+
+type UploadSuccessMsg struct {
+	FileName string
+}
+
+type UploadErrorMsg struct {
+	Err error
+}

@@ -14,9 +14,9 @@ type Manager struct {
 	current tea.Model
 }
 
-func InitManager(initialScreen tea.Model) Manager {
+func InitManager(model tea.Model) Manager {
 	return Manager{
-		current: initialScreen,
+		current: model,
 	}
 }
 
@@ -27,22 +27,25 @@ func (m Manager) Init() tea.Cmd {
 func (m Manager) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch nav := msg.(type) {
 	case shared.NavigateMsg:
-		if nav.Target == shared.Host {
-			m.current = router.Load(shared.Auth)
-		} else {
-			m.current = router.Load(nav.Target)
+		m.current = router.Load(nav.Target)
+		return m, m.current.Init()
+
+	case shared.ResetTo:
+		if shared.SState.Running {
+			shared.SState.Password = ""
+			server.Quit()
 		}
+		m.current = router.Load(nav.Target)
+		return m, m.current.Init()
 
 	case shared.SetPasswordMsg:
 		if !shared.SState.Running {
-			shared.SState.Running = true
-
-			go func() {
-				shared.SState.Password = nav.Password
-				server.Start(":8080")
-			}()
+			shared.SState.Password = nav.Password
+			server.Start(":8080", &shared.SState)
 		}
 		m.current = router.Load(shared.Dashboard)
+		return m, m.current.Init()
+
 	}
 	newModel, cmd := m.current.Update(msg)
 	m.current = newModel
@@ -53,11 +56,13 @@ func (m Manager) View() string {
 	return m.current.View()
 }
 
-func (m *Manager) Run() {
+func (m Manager) Run() {
 	p := tea.NewProgram(m)
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
-	fmt.Println("Shutting down BUNKR...")
+	fmt.Printf("Shutting down BUNKR...")
+	fmt.Printf("%v\n\nServer was running at %s\n", shared.SState.Err, shared.SState.URL)
+
 	os.Exit(0)
 }

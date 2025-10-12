@@ -9,85 +9,85 @@ import (
 	"github.com/rrajvardhan/bunkr/internal/tui/shared/style"
 )
 
+type Option string
+
+const (
+	Files  Option = "Manage Files"
+	Upload Option = "Upload Files"
+	Users  Option = "Connected Users"
+)
+
 type State struct {
-	choices  []shared.Route
 	cursor   int
 	selected shared.Route
+	options  []shared.Route
+	url      string
+	showQR   bool
 }
 
 func Start() State {
 	return State{
-		choices:  []shared.Route{shared.Host},
 		cursor:   0,
-		selected: "",
+		selected: shared.None,
+		options:  []shared.Route{shared.Files, shared.Users, shared.Upload},
+		url:      shared.SState.URL,
+		showQR:   false,
 	}
 }
 
-func (m State) Init() tea.Cmd { return tea.EnterAltScreen }
+func (m State) Init() tea.Cmd { return nil }
 
 func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "esc", "ctrl+c":
-			return m, tea.Quit
-		case "tab":
-			m.cursor = (m.cursor + 1) % len(m.choices)
-		case "enter", " ":
-			m.selected = m.choices[m.cursor]
-			return m, func() tea.Msg {
-				return shared.NavigateMsg{Target: m.selected}
+		case "esc":
+			if m.showQR {
+				m.showQR = false
+				return m, nil
 			}
+			return m, func() tea.Msg { return shared.ResetTo{Target: shared.Home} }
+		case "q":
+			m.showQR = !m.showQR
+			return m, nil
+		case "tab":
+			m.cursor = (m.cursor + 1) % len(m.options)
+			m.selected = m.options[m.cursor]
+		case "enter", " ":
+			m.selected = m.options[m.cursor]
+			return m, func() tea.Msg { return shared.NavigateMsg{Target: m.selected} }
 		}
-
-	case tea.WindowSizeMsg:
-		shared.Term.Width = msg.Width
-		shared.Term.Height = msg.Height
-		return m, nil
 	}
 	return m, nil
 }
 
 func (m State) View() string {
-	// Hackerish ASCII-style header
-	header := HeaderStyle.Render(`
- ▄▄▄▄▄▄    ▄▄    ▄▄  ▄▄▄   ▄▄  ▄▄   ▄▄▄  ▄▄▄▄▄▄   
- ██▀▀▀▀██  ██    ██  ███   ██  ██  ██▀   ██▀▀▀▀██ 
- ██    ██  ██    ██  ██▀█  ██  ██▄██     ██    ██ 
- ███████   ██    ██  ██ ██ ██  █████     ███████  
- ██    ██  ██    ██  ██  █▄██  ██  ██▄   ██  ▀██▄ 
- ██▄▄▄▄██  ▀██▄▄██▀  ██   ███  ██   ██▄  ██    ██ 
- ▀▀▀▀▀▀▀     ▀▀▀▀    ▀▀   ▀▀▀  ▀▀    ▀▀  ▀▀    ▀▀▀
-`)
+	header := style.Subtle.Render(shared.SState.URL) + "               " + Shrtct.Render("press 'q' to view QR code.")
 
-	divider := DividerStyle.Render(strings.Repeat("─", 74))
-
-	var choices strings.Builder
-	for i, choice := range m.choices {
+	var menu string
+	for i, opt := range m.options {
 		if i == m.cursor {
-			choices.WriteString(fmt.Sprintf("› %s\n", ActiveChoice.Render(string(choice))))
+			menu += style.ActiveChoice.Render(fmt.Sprintf("> %s             ", opt))
 		} else {
-			choices.WriteString(fmt.Sprintf("  %s\n", InactiveChoice.Render(string(choice))))
+			menu += fmt.Sprintf("  %s             ", opt)
 		}
 	}
 
-	controls := Info.Render(
-		"[Tab] Cycle selection   [Enter] Confirm   [Esc] Quit",
-	)
-
-	tagline := Subtle.Render(strings.Join([]string{
-		"Lorem ipsum dolor sit amet, consectetur",
-		"adipiscing elit. Sed do eiusmod tempor",
-	}, "\n"))
+	controls := Info.Render("[Tab] Cycle options  [Enter] Select  [Esc] Back To Home (kill server)")
+	divider := style.Divider.Render(strings.Repeat("─", 74))
 
 	content := fmt.Sprintf(
-		"%s\n%s\n%s\n%s\n\n%s",
+		"%s\n\n%s\n\n%s\n%s",
 		header,
-		choices.String(),
-		controls,
+		menu,
 		divider,
-		tagline,
+		controls,
 	)
+
+	if m.showQR {
+		content = GenerateCode(shared.SState.URL + "/ping")
+		return style.TermCenter(content)
+	}
 
 	return style.TermCenter(style.BoxStyle.Render(content))
 }

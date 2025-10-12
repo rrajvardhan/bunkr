@@ -2,6 +2,7 @@ package auth
 
 import (
 	"fmt"
+	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/rrajvardhan/bunkr/internal/tui/shared"
@@ -31,13 +32,14 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.Type {
 		case tea.KeyCtrlC, tea.KeyEsc:
-			return m, tea.Quit
+
+			return m, func() tea.Msg { return shared.NavigateMsg{Target: shared.Home} }
 
 		case tea.KeyTab:
 			m.cursor = (m.cursor + 1) % 2
 		case tea.KeyBackspace, tea.KeyDelete:
 
-			m.errorMessage = ""
+			m.errorMessage = " "
 			if m.cursor == 0 && len(m.password) > 0 {
 				m.password = m.password[:len(m.password)-1]
 			} else if m.cursor == 1 && len(m.confirm) > 0 {
@@ -53,7 +55,6 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		default:
 
-			m.errorMessage = ""
 			switch msg.String() {
 			case "ctrl+h":
 				m.hidden = !m.hidden
@@ -83,26 +84,32 @@ func (m State) View() string {
 		return stars
 	}
 
-	passLine := fmt.Sprintf("Password: %s", hide(m.password))
-	confLine := fmt.Sprintf("Confirm:  %s", hide(m.confirm))
+	header := Header.Render("Set a password")
+	info := style.Subtle.Render("This password will be used to authenticate devices connecting to this server.\nplease keep it safe.\n\n(Leave the field blank to allow anyone to connect without a password)")
+
+	passLine := fmt.Sprintf("  Password : %s ", hide(m.password))
+	confLine := fmt.Sprintf("  Confirm  : %s ", hide(m.confirm))
 	if m.cursor == 0 {
-		passLine = Cursor.Render(passLine)
+		passLine = style.ActiveChoice.Render(passLine + "<")
 	} else {
-		confLine = Cursor.Render(confLine)
+		confLine = style.ActiveChoice.Render(confLine + "<")
 	}
 
 	body := passLine + "\n" + confLine
-	if m.errorMessage != " " {
-		body += "\n\n" + Error.Render(m.errorMessage)
-	}
+	body += "\n\n" + Error.Render(m.errorMessage)
 
 	controls := Info.Render(
-		"[Enter]  Confirm            [Tab] Cycle field\n[Ctrl+H] Toggle visibility  [Esc] Quit",
+		"[Enter] Confirm  [Tab] Cycle field  [Ctrl+H] Toggle visibility  [Esc] Back",
 	)
 
+	divider := style.Divider.Render(strings.Repeat("─", 74))
+
 	content := fmt.Sprintf(
-		"\n%s\n\n%s",
+		"%s\n\n%s\n\n\n%s\n\n%s\n%s",
+		header,
+		info,
 		body,
+		divider,
 		controls,
 	)
 

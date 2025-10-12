@@ -6,11 +6,40 @@ import (
 	"github.com/rrajvardhan/bunkr/internal/tui/theme"
 )
 
-var BoxStyle = lipgloss.NewStyle().
-	Border(lipgloss.RoundedBorder()).
-	BorderForeground(lipgloss.Color(theme.Colors.SelectionsNoAlpha)).
-	Width(80).
-	Padding(1, 3)
+var (
+	Header = lipgloss.NewStyle().
+		Bold(true).
+		Padding(0, 9).
+		Foreground(lipgloss.Color(theme.Colors.Primary))
+
+	Divider = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(theme.Colors.SelectionsNoAlpha))
+
+	ActiveChoice = lipgloss.NewStyle().
+			Foreground(lipgloss.Color(theme.Colors.Secondary)).
+			Bold(true)
+
+	InactiveChoice = lipgloss.NewStyle().
+			Foreground(lipgloss.Color(theme.Colors.Comments))
+
+	Info = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(theme.Colors.Comments)).
+		Padding(0, 9).
+		Faint(true)
+
+	Subtle = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(theme.Colors.Quinary))
+
+	BoxStyle = lipgloss.NewStyle().
+			Border(lipgloss.NormalBorder()).
+			BorderForeground(lipgloss.Color(theme.Colors.SelectionsNoAlpha)).
+			Width(80).
+			Padding(1, 3, 0, 3)
+
+	Error = lipgloss.NewStyle().
+		Foreground(lipgloss.Color(theme.Colors.Senary)).
+		Bold(true)
+)
 
 func TermCenter(content string) string {
 	return lipgloss.Place(

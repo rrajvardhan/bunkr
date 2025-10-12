@@ -2,6 +2,8 @@ package shared
 
 type ServerState struct {
 	Password string
+	URL      string
+	Err      string
 	Running  bool
 }
 

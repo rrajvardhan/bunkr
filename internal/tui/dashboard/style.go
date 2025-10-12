@@ -2,30 +2,18 @@ package dashboard
 
 import (
 	"github.com/charmbracelet/lipgloss"
+	"github.com/rrajvardhan/bunkr/internal/tui/shared"
+	"github.com/rrajvardhan/bunkr/internal/tui/shared/style"
 	"github.com/rrajvardhan/bunkr/internal/tui/theme"
 )
 
-var (
-	HeaderStyle = lipgloss.NewStyle().
-			Bold(true).
-			Padding(0, 9).
-			Foreground(lipgloss.Color(theme.Colors.Primary))
+var Info = style.Info.
+	Padding(0, 2)
 
-	DividerStyle = lipgloss.NewStyle().
-			Foreground(lipgloss.Color(theme.Colors.SelectionsNoAlpha))
+var Shrtct = style.Info.
+	Foreground(lipgloss.Color(theme.Colors.Tertiary)).
+	Faint(false)
 
-	ActiveChoice = lipgloss.NewStyle().
-			Foreground(lipgloss.Color(theme.Colors.Secondary)).
-			Bold(true)
-
-	InactiveChoice = lipgloss.NewStyle().
-			Foreground(lipgloss.Color(theme.Colors.Comments))
-
-	Info = lipgloss.NewStyle().
-		Foreground(lipgloss.Color(theme.Colors.Comments)).
-		Faint(true)
-
-	Subtle = lipgloss.NewStyle().
-		Foreground(lipgloss.Color(theme.Colors.Quinary)).
-		Faint(true)
-)
+var BoxStyle = style.BoxStyle.
+	Width(shared.Term.Width).
+	Height(shared.Term.Height)

@@ -3,8 +3,13 @@ package shared
 type Route string
 
 const (
-	None      Route = "none"
+	None      Route = ""
+	Home      Route = "Home"
+	Auth      Route = "host"
+	Connect   Route = "connect"
+	About     Route = "about"
 	Dashboard Route = "dashboard"
-	Host      Route = "host"
-	Auth      Route = "auth"
+	Files     Route = "manage files"
+	Users     Route = "connected users"
+	Upload    Route = "upload files"
 )
