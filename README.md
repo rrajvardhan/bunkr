@@ -12,7 +12,7 @@ A lightweight, secure, LAN-only file-sharing tool written entirely in Go. It ope
 * **Host-only uploads:** Only the host can add files.
 * **Client downloads:** Clients can download files with optional password.
 * **LAN-only operation:** Works over same Wi-Fi or local network.
-* **TUI interface:** Simple textual UI for host and client.
+* **TUI interface:** Simple UI for host and client.
 
 **Host Mode:**
 * Upload/Manage files using the host TUI.
