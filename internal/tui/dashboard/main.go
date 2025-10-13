@@ -9,14 +9,6 @@ import (
 	"github.com/rrajvardhan/bunkr/internal/tui/shared/style"
 )
 
-type Option string
-
-const (
-	Files  Option = "Manage Files"
-	Upload Option = "Upload Files"
-	Users  Option = "Connected Users"
-)
-
 type State struct {
 	cursor   int
 	selected shared.Route
@@ -29,7 +21,7 @@ func Start() State {
 	return State{
 		cursor:   0,
 		selected: shared.None,
-		options:  []shared.Route{shared.Files, shared.Users, shared.Upload},
+		options:  []shared.Route{shared.Files, shared.Upload},
 		url:      shared.SState.URL,
 		showQR:   false,
 	}
@@ -73,13 +65,15 @@ func (m State) View() string {
 		}
 	}
 
+	body := Pad.Render(menu)
+
 	controls := Info.Render("[Tab] Cycle options  [Enter] Select  [Esc] Back To Home (kill server)")
 	divider := style.Divider.Render(strings.Repeat("─", 74))
 
 	content := fmt.Sprintf(
 		"%s\n\n%s\n\n%s\n%s",
 		header,
-		menu,
+		body,
 		divider,
 		controls,
 	)
