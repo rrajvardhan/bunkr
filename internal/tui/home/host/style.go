@@ -1,4 +1,4 @@
-package auth
+package host
 
 import (
 	"github.com/charmbracelet/lipgloss"

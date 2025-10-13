@@ -46,6 +46,13 @@ func (m Manager) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.current = router.Load(shared.Dashboard)
 		return m, m.current.Init()
 
+	case shared.SetServerMsg:
+		shared.SState.URL = nav.Url
+		shared.SState.Password = nav.Password
+
+		m.current = router.Load(shared.Client)
+		return m, m.current.Init()
+
 	}
 	newModel, cmd := m.current.Update(msg)
 	m.current = newModel

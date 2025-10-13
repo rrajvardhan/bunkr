@@ -33,7 +33,10 @@ func Start(port string, sState *shared.ServerState) {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", RootHandler)
 	mux.HandleFunc("/ping", PingHandler)
+	mux.HandleFunc("/login", LoginHandler)
 	mux.HandleFunc("/upload", UploadHandler)
+	mux.HandleFunc("/files", ListFilesHandler)
+	mux.HandleFunc("/download/", DownloadHandler)
 
 	srv = &http.Server{
 		Addr:    "0.0.0.0" + port,

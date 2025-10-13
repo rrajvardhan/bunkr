@@ -1,4 +1,4 @@
-package auth
+package host
 
 import (
 	"fmt"
@@ -37,6 +37,8 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case tea.KeyTab:
 			m.cursor = (m.cursor + 1) % 2
+		case tea.KeyCtrlH:
+			m.hidden = !m.hidden
 		case tea.KeyBackspace, tea.KeyDelete:
 
 			m.errorMessage = " "
@@ -54,17 +56,11 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, func() tea.Msg { return shared.SetPasswordMsg{Password: m.password} }
 
 		default:
-
-			switch msg.String() {
-			case "ctrl+h":
-				m.hidden = !m.hidden
-			default:
-				if len(msg.String()) == 1 {
-					if m.cursor == 0 {
-						m.password += msg.String()
-					} else {
-						m.confirm += msg.String()
-					}
+			if len(msg.String()) == 1 {
+				if m.cursor == 0 {
+					m.password += msg.String()
+				} else {
+					m.confirm += msg.String()
 				}
 			}
 		}

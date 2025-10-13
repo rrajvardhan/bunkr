@@ -8,6 +8,11 @@ type SetPasswordMsg struct {
 	Password string
 }
 
+type SetServerMsg struct {
+	Url      string
+	Password string
+}
+
 type ResetTo struct {
 	Target Route
 }
@@ -17,5 +22,9 @@ type UploadSuccessMsg struct {
 }
 
 type UploadErrorMsg struct {
+	Err error
+}
+
+type AuthErrorMsg struct {
 	Err error
 }

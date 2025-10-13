@@ -17,7 +17,7 @@ type State struct {
 
 func Start() State {
 	return State{
-		choices:  []shared.Route{shared.Auth, shared.Connect, shared.About},
+		choices:  []shared.Route{shared.Host, shared.Connect, shared.About},
 		cursor:   0,
 		selected: shared.None,
 	}

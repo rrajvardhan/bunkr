@@ -5,8 +5,9 @@ type Route string
 const (
 	None      Route = ""
 	Home      Route = "Home"
-	Auth      Route = "host"
+	Host      Route = "host"
 	Connect   Route = "connect"
+	Client    Route = "client"
 	About     Route = "about"
 	Dashboard Route = "dashboard"
 	Files     Route = "manage files"
