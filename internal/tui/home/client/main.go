@@ -13,6 +13,7 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
 
+	"github.com/rrajvardhan/bunkr/internal/crypto"
 	"github.com/rrajvardhan/bunkr/internal/tui/shared"
 	"github.com/rrajvardhan/bunkr/internal/tui/shared/style"
 )
@@ -82,7 +83,7 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			fileURL := fmt.Sprintf("%s/download/%s", shared.SState.URL, selected.title)
 			savePath := filepath.Join("downloads", selected.title)
 
-			if err := downloadFile(fileURL, savePath); err != nil {
+			if err := downloadFile(fileURL, savePath, shared.SState.Password); err != nil {
 				m.err = err
 				return m, clearAfter(3 * time.Second)
 			}
@@ -158,7 +159,7 @@ func loadServerFiles() ([]list.Item, error) {
 	return items, nil
 }
 
-func downloadFile(url, savePath string) error {
+func downloadFile(url, savePath, passphrase string) error {
 	resp, err := http.Get(url)
 	if err != nil {
 		return fmt.Errorf("failed to download: %w", err)
@@ -169,18 +170,27 @@ func downloadFile(url, savePath string) error {
 		return fmt.Errorf("server returned %s", resp.Status)
 	}
 
+	data, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return fmt.Errorf("failed to read response: %w", err)
+	}
+
+	if passphrase != "" {
+		data, err = crypto.DecryptBytes(passphrase, data)
+		if err != nil {
+			return fmt.Errorf("decryption failed: %v", err)
+		}
+	}
+
 	if err := os.MkdirAll(filepath.Dir(savePath), 0755); err != nil {
 		return err
 	}
 
-	out, err := os.Create(savePath)
-	if err != nil {
+	if err := os.WriteFile(savePath, data, 0600); err != nil {
 		return err
 	}
-	defer out.Close()
 
-	_, err = io.Copy(out, resp.Body)
-	return err
+	return nil
 }
 
 func clearAfter(d time.Duration) tea.Cmd {

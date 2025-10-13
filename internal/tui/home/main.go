@@ -29,7 +29,7 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch msg.String() {
-		case "esc", "ctrl+c":
+		case "esc":
 			return m, tea.Quit
 		case "tab":
 			m.cursor = (m.cursor + 1) % len(m.choices)

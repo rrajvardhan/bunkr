@@ -33,7 +33,7 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.Type {
 		case tea.KeyEsc:
-			return m, tea.Quit
+			return m, func() tea.Msg { return shared.NavigateMsg{Target: shared.Home} }
 
 		case tea.KeyTab:
 			m.cursor = (m.cursor + 1) % 2

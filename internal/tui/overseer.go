@@ -68,7 +68,6 @@ func (m Overseer) Run() {
 		fmt.Printf("Error: %v\n", err)
 	}
 	fmt.Printf("Shutting down BUNKR...")
-	fmt.Printf("%v\n\nServer was running at %s\n", shared.SState.Err, shared.SState.URL)
 
 	os.Exit(0)
 }

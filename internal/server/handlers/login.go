@@ -28,6 +28,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	shared.SState.Password = creds.Password
+
 	w.WriteHeader(http.StatusOK)
 	fmt.Fprint(w, `{"status":"ok"}`)
 }

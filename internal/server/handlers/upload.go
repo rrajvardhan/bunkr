@@ -5,16 +5,14 @@ import (
 	"io"
 	"net/http"
 	"os"
+
+	"github.com/rrajvardhan/bunkr/internal/crypto"
+	"github.com/rrajvardhan/bunkr/internal/tui/shared"
 )
 
 func Upload(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	if err := r.ParseMultipartForm(50 << 20); err != nil {
-		http.Error(w, fmt.Sprintf("Could not parse multipart form: %v", err), http.StatusBadRequest)
 		return
 	}
 
@@ -25,20 +23,32 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
+	data, err := io.ReadAll(file)
+	if err != nil {
+		http.Error(w, fmt.Sprintf("Could not read uploaded file: %v", err), http.StatusInternalServerError)
+		return
+	}
+
+	passphrase := shared.SState.Password
+
+	var blob []byte
+	if passphrase != "" {
+		blob, err = crypto.EncryptBytes(passphrase, data)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Could not encrypt file: %v", err), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		blob = data
+	}
+
 	dstPath := "./uploads/" + handler.Filename
 	if err := os.MkdirAll("./uploads", 0755); err != nil {
 		http.Error(w, fmt.Sprintf("Could not create upload directory: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	dst, err := os.Create(dstPath)
-	if err != nil {
-		http.Error(w, fmt.Sprintf("Could not create file: %v", err), http.StatusInternalServerError)
-		return
-	}
-	defer dst.Close()
-
-	if _, err := io.Copy(dst, file); err != nil {
+	if err := os.WriteFile(dstPath, blob, 0600); err != nil {
 		http.Error(w, fmt.Sprintf("Could not save file: %v", err), http.StatusInternalServerError)
 		return
 	}
