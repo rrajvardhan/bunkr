@@ -26,6 +26,10 @@ A lightweight, secure, LAN-only file-sharing tool written entirely in Go. It ope
 
 ## Build Instructions
 
+
+https://github.com/user-attachments/assets/14adc4d5-6239-4af5-9a6e-2dc09b2001f2
+
+
 Simply clone, build, and run:
 
 ```bash
@@ -41,4 +45,3 @@ or, skip build:
 ```bash
 go run ./cmd/bunkr/main.go
 ```
----
