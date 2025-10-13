@@ -10,14 +10,14 @@ import (
 )
 
 type State struct {
-	choices  []shared.Route
+	choices  []shared.View
 	cursor   int
-	selected shared.Route
+	selected shared.View
 }
 
 func Start() State {
 	return State{
-		choices:  []shared.Route{shared.Host, shared.Connect, shared.About},
+		choices:  []shared.View{shared.Host, shared.Connect, shared.About},
 		cursor:   0,
 		selected: shared.None,
 	}

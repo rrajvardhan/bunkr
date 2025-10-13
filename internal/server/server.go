@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/rrajvardhan/bunkr/internal/server/handlers"
 	"github.com/rrajvardhan/bunkr/internal/tui/shared"
 )
 
@@ -31,12 +32,12 @@ func Start(port string, sState *shared.ServerState) {
 	}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", RootHandler)
-	mux.HandleFunc("/ping", PingHandler)
-	mux.HandleFunc("/login", LoginHandler)
-	mux.HandleFunc("/upload", UploadHandler)
-	mux.HandleFunc("/files", ListFilesHandler)
-	mux.HandleFunc("/download/", DownloadHandler)
+	mux.HandleFunc("/", handlers.Root)
+	mux.HandleFunc("/ping", handlers.Ping)
+	mux.HandleFunc("/login", handlers.Login)
+	mux.HandleFunc("/upload", handlers.Upload)
+	mux.HandleFunc("/files", handlers.Files)
+	mux.HandleFunc("/download/", handlers.Download)
 
 	srv = &http.Server{
 		Addr:    "0.0.0.0" + port,

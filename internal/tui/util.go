@@ -1,4 +1,4 @@
-package router
+package tui
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
@@ -14,8 +14,9 @@ import (
 	"github.com/rrajvardhan/bunkr/internal/tui/shared"
 )
 
-func Load(route shared.Route) tea.Model {
+func Load(route shared.View) tea.Model {
 	switch route {
+
 	case shared.Home:
 		return home.Start()
 	case shared.Host:
@@ -32,9 +33,9 @@ func Load(route shared.Route) tea.Model {
 
 	case shared.Connect:
 		return login.Start()
-
 	case shared.Client:
 		return client.Start()
+
 	default:
 		return home.Start()
 	}

@@ -6,6 +6,6 @@ import (
 )
 
 func main() {
-	manager := tui.InitManager(home.Start())
-	manager.Run()
+	overseer := tui.InitOverseer(home.Start())
+	overseer.Run()
 }

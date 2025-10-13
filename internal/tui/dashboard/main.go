@@ -11,8 +11,8 @@ import (
 
 type State struct {
 	cursor   int
-	selected shared.Route
-	options  []shared.Route
+	selected shared.View
+	options  []shared.View
 	url      string
 	showQR   bool
 }
@@ -21,7 +21,7 @@ func Start() State {
 	return State{
 		cursor:   0,
 		selected: shared.None,
-		options:  []shared.Route{shared.Files, shared.Upload},
+		options:  []shared.View{shared.Files, shared.Upload},
 		url:      shared.SState.URL,
 		showQR:   false,
 	}

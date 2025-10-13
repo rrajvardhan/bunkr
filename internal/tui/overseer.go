@@ -6,28 +6,27 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/rrajvardhan/bunkr/internal/server"
-	"github.com/rrajvardhan/bunkr/internal/tui/router"
 	"github.com/rrajvardhan/bunkr/internal/tui/shared"
 )
 
-type Manager struct {
+type Overseer struct {
 	current tea.Model
 }
 
-func InitManager(model tea.Model) Manager {
-	return Manager{
+func InitOverseer(model tea.Model) Overseer {
+	return Overseer{
 		current: model,
 	}
 }
 
-func (m Manager) Init() tea.Cmd {
+func (m Overseer) Init() tea.Cmd {
 	return m.current.Init()
 }
 
-func (m Manager) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+func (m Overseer) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch nav := msg.(type) {
 	case shared.NavigateMsg:
-		m.current = router.Load(nav.Target)
+		m.current = Load(nav.Target)
 		return m, m.current.Init()
 
 	case shared.ResetTo:
@@ -35,7 +34,7 @@ func (m Manager) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			shared.SState.Password = ""
 			server.Quit()
 		}
-		m.current = router.Load(nav.Target)
+		m.current = Load(nav.Target)
 		return m, m.current.Init()
 
 	case shared.SetPasswordMsg:
@@ -43,14 +42,14 @@ func (m Manager) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			shared.SState.Password = nav.Password
 			server.Start(":8080", &shared.SState)
 		}
-		m.current = router.Load(shared.Dashboard)
+		m.current = Load(shared.Dashboard)
 		return m, m.current.Init()
 
 	case shared.SetServerMsg:
 		shared.SState.URL = nav.Url
 		shared.SState.Password = nav.Password
 
-		m.current = router.Load(shared.Client)
+		m.current = Load(shared.Client)
 		return m, m.current.Init()
 
 	}
@@ -59,11 +58,11 @@ func (m Manager) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	return m, cmd
 }
 
-func (m Manager) View() string {
+func (m Overseer) View() string {
 	return m.current.View()
 }
 
-func (m Manager) Run() {
+func (m Overseer) Run() {
 	p := tea.NewProgram(m)
 	if _, err := p.Run(); err != nil {
 		fmt.Printf("Error: %v\n", err)

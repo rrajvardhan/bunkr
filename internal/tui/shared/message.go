@@ -1,7 +1,7 @@
 package shared
 
 type NavigateMsg struct {
-	Target Route
+	Target View
 }
 
 type SetPasswordMsg struct {
@@ -14,7 +14,7 @@ type SetServerMsg struct {
 }
 
 type ResetTo struct {
-	Target Route
+	Target View
 }
 
 type UploadSuccessMsg struct {
