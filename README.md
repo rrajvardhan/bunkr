@@ -6,8 +6,6 @@ A lightweight, secure, LAN-only file-sharing tool written entirely in Go. It ope
 * **Client Mode:** Connect via URL, provide optional password, download and decrypt files.
 * Files exist **only while the server is running**.
 
----
-
 ## Features
 
 * **Single Binary:** Run as host or client.
@@ -23,8 +21,6 @@ A lightweight, secure, LAN-only file-sharing tool written entirely in Go. It ope
 **Client Mode:**
 * Enter server URL and optional password.
 * List available files and download them.
-
----
 
 ## A Quick Look
 
