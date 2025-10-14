@@ -9,14 +9,14 @@ import (
 	"github.com/rrajvardhan/bunkr/internal/tui/shared/style"
 )
 
-var line = "Private file sharing for local networks."
+var line = "Encrypted file sharing that stays on your network."
 
-var desc = ("Bunkr is a lightweight, LAN-only file sharing tool built in Go. " +
-	"It encrypts every file before transfer and never touches the cloud. " +
-	"Designed for simplicity, speed, and a bit of paranoia. " +
-	"\n\n" +
-	"The terminal interface is powered by Bubble Tea.\n" +
-	"You can find the source code at github.com/rrajvardhan/bunkr.")
+var desc = ("Share files over your local network with password protection and encryption. " +
+"For when your devices are on the same network and the cloud is unnecessary. " +
+"No external servers needed — just direct, encrypted transfers.\n" + 
+    "Built in Go with a Bubble Tea terminal interface." +
+    "\n\n" +
+    "github.com/rrajvardhan/bunkr")
 
 type State struct{}
 
