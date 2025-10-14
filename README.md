@@ -1,32 +1,33 @@
 # BUNKR
 
-A lightweight, secure, LAN-only file-sharing tool written entirely in Go. It operates in two modes: **host** or **client** using a single binary.
+**Encrypted file sharing over your local network. No cloud, no compromises.**
 
-* **Host Mode:** Upload files (encrypted locally), generate LAN URL/QR code.
-* **Client Mode:** Connect via URL, provide optional password, download and decrypt files.
-* Files exist **only while the server is running**.
+A single-binary Go tool that lets you share files securely within your LAN. Host files from one device, download them from another — all encrypted.
+
+Why route files through the cloud when your devices are already on the same network?
+
+## How It Works
+
+**Host Mode:**  
+- Upload and encrypt files via a terminal UI
+- Get a shareable LAN URL + QR code
+- Files exist only while the server runs
+
+**Client Mode:**  
+- Connect using the host's URL
+- Enter the password (if set)
+- Download and decrypt files directly
 
 ## Features
 
-* **Single Binary:** Run as host or client.
-* **Host-only uploads:** Only the host can add files.
-* **Client downloads:** Clients can download files with optional password.
-* **LAN-only operation:** Works over same Wi-Fi or local network.
-* **TUI interface:** Simple UI for host and client.
-
-**Host Mode:**
-* Upload/Manage files using the host TUI.
-* LAN URL and QR code will be displayed for clients.
-
-**Client Mode:**
-* Enter server URL and optional password.
-* List available files and download them.
-
-## A Quick Look
+- **Single binary** — runs as host or client
+- **Password-protected transfers** — optional but recommended
+- **LAN-only** — never leaves your network
+- **Terminal UI** — powered by Bubble Tea
 
 https://github.com/user-attachments/assets/14adc4d5-6239-4af5-9a6e-2dc09b2001f2
 
-## Build Instructions
+## Quick Start
 
 Simply clone, build, and run:
 

@@ -9,6 +9,15 @@ import (
 	"github.com/rrajvardhan/bunkr/internal/tui/shared/style"
 )
 
+var line = "Private file sharing for local networks."
+
+var desc = ("Bunkr is a lightweight, LAN-only file sharing tool built in Go. " +
+	"It encrypts every file before transfer and never touches the cloud. " +
+	"Designed for simplicity, speed, and a bit of paranoia. " +
+	"\n\n" +
+	"The terminal interface is powered by Bubble Tea.\n" +
+	"You can find the source code at github.com/rrajvardhan/bunkr.")
+
 type State struct{}
 
 func Start() State            { return State{} }
@@ -27,9 +36,9 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (m State) View() string {
 	header := Header.Render("About")
-	tagline := style.Subtle.Render("whfdi enfiwen wio iefhwih")
 
-	body := ("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.")
+	tagline := style.Subtle.Render(line)
+	body := desc
 
 	controls := Info.Render("[Any Key] Back ")
 
