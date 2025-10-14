@@ -32,7 +32,7 @@ func (m Overseer) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case shared.ResetTo:
 		if shared.SState.Running {
 			shared.SState.Password = ""
-			server.Quit()
+			server.Quit(&shared.SState)
 		}
 		m.current = Load(nav.Target)
 		return m, m.current.Init()

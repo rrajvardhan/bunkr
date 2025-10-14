@@ -53,11 +53,12 @@ func Start(port string, sState *shared.ServerState) {
 	}()
 }
 
-func Quit() {
+func Quit(sState *shared.ServerState) {
 	if srv != nil {
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
 		_ = srv.Shutdown(ctx)
+		sState.Running = false
 	}
 
 	if err := os.RemoveAll("./uploads"); err != nil {
