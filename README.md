@@ -10,7 +10,7 @@ Why route files through the cloud when your devices are already on the same netw
 
 **Host Mode:**  
 - Upload and encrypt files via a terminal UI
-- Get a shareable LAN URL + QR code
+- Get a shareable LAN URL.
 - Files exist only while the server runs
 
 **Client Mode:**  
@@ -20,7 +20,7 @@ Why route files through the cloud when your devices are already on the same netw
 
 ## Features
 
-- **Single binary** — runs as host or client
+- **Cross-platform** — Linux, macOS, Windows
 - **Password-protected transfers** — optional but recommended
 - **LAN-only** — never leaves your network
 - **Terminal UI** — powered by Bubble Tea
