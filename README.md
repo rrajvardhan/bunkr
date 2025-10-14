@@ -1,8 +1,8 @@
 # BUNKR
 
-**Encrypted file sharing over your local network. No cloud, no compromises.**
+**Encrypted file sharing over your local network.**
 
-A single-binary Go tool that lets you share files securely within your LAN. Host files from one device, download them from another — all encrypted.
+A Go tool that lets you share files securely within your LAN. Host files from one device, download them from another — all encrypted.
 
 Why route files through the cloud when your devices are already on the same network?
 
