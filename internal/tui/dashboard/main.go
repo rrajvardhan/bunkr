@@ -54,7 +54,7 @@ func (m State) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (m State) View() string {
-	header := style.Subtle.Render(shared.SState.URL) + "          " + Shrtct.Render("press 'q' to view QR code.")
+	header := style.Subtle.Render(shared.SState.URL) + "             " + Shrtct.Render("press 'q' to view QR code.")
 
 	var menu string
 	for i, opt := range m.options {
